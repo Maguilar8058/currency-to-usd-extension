@@ -1,0 +1,14 @@
+﻿{
+  "manifest_version": 3,
+  "name": "Currency to USD Price Converter",
+  "version": "0.2.8",
+  "description": "Shows the USD equivalent next to prices in different currencies.",
+  "permissions": ["storage"],
+  "host_permissions": ["https://api.frankfurter.app/*", "https://api.frankfurter.dev/*"],
+  "background": { "scripts": ["background-multi.js"] },
+  "content_scripts": [{ "matches": ["<all_urls>"], "js": ["content-multi.js"], "css": ["content.css"], "run_at": "document_idle", "all_frames": true }],
+  "action": { "default_title": "Convert to USD", "default_popup": "popup.html" },
+  "browser_specific_settings": { "gecko": { "id": "currency-usd-converter@maguilar.local" } }
+}
+
+

@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Convert to USD</title>
+  <style>
+    body { min-width: 290px; max-width: 340px; padding: 14px; font: 14px system-ui, sans-serif; }
+    h3 { margin: 0 0 10px; }
+    #status { margin-bottom: 8px; }
+    #currencies { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
+    .currency { padding: 3px 7px; border-radius: 12px; background: #eef5ff; color: #174a8b; font-size: 12px; }
+    small { display: block; margin-top: 10px; color: #666; line-height: 1.35; }
+    .support { display: block; margin-top: 12px; padding: 8px 10px; border-radius: 7px; background: #ea4aaa; color: white; text-align: center; text-decoration: none; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <h3>Prices in USD</h3>
+  <div id="status">Loading status...</div>
+  <div id="currencies" aria-label="Supported currencies"></div>
+  <small>Conversion updates automatically and appears next to detected prices.</small>
+  <a class="support" href="https://github.com/sponsors/Maguilar8058" target="_blank" rel="noopener">Support this free extension on GitHub</a>
+  <script src="popup.js"></script>
+</body>
+</html>
