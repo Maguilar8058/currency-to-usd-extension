@@ -2,3 +2,4 @@ codex-memory/
 session-summary.txt
 test-*.js
 *.log
+dist/
