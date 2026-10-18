@@ -1,7 +1,7 @@
 ﻿{
   "manifest_version": 3,
   "name": "Currency to USD Price Converter",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "description": "Shows the USD equivalent next to prices in different currencies.",
   "permissions": ["storage"],
   "host_permissions": ["https://api.frankfurter.app/*", "https://api.frankfurter.dev/*"],
@@ -14,7 +14,8 @@
     "128": "icons/icon128.png"
   },
   "action": { "default_title": "Convert to USD", "default_popup": "popup.html", "default_icon": { "16": "icons/icon16.png", "32": "icons/icon32.png", "48": "icons/icon48.png", "128": "icons/icon128.png" } },
-  "browser_specific_settings": { "gecko": { "id": "currency-usd-converter@maguilar.local" } }
+  "browser_specific_settings": { "gecko": { "id": "currency-usd-converter@maguilar.local", "data_collection_permissions": { "required": ["none"] } } }
 }
+
 
 

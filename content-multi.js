@@ -62,7 +62,7 @@ function parseCurrency(text) {
     [/\u20A9\s*([\d,.]+)/i, "KRW", 1], [/([\d,.]+)\s*(?:\u20A9|KRW|\uC6D0)/i, "KRW", 1],
     [/(?:CNY|RMB)\s*([\d,.]+)/i, "CNY", 1], [/([\d,.]+)\s*(?:CNY|RMB|\u5143)/i, "CNY", 1],
     [/CHF\s*([\d,.]+)/i, "CHF", 1], [/([\d,.]+)\s*CHF\b/i, "CHF", 1],
-    [/[\u00A5\uFFE5]\s*([\d,.]+)/i, "JPY", 1], [/([\d,.]+)\s*(?:[\u00A5\uFFE5]|Yen|JPY)/i, "JPY", 1],
+    [/[\u00A5\uFFE5]\s*([\d,.]+)/i, "JPY", 1], [/([\d,.]+)\s*(?:[\u00A5\uFFE5]|Yen|JPY|\u5186)/i, "JPY", 1],
     [/\$\s*([\d,.]+)/i, defaultDollarCurrency(), 1]
   ];
   for (const [regex, code, group] of list) {
@@ -100,11 +100,25 @@ function scanText(root) {
 
 function scanMercariTiles() {
   document.querySelectorAll('[data-testid="item-tile-price"]').forEach((element) => {
-    const match = element.textContent.match(/[Â¥ï¿¥]\s*([\d,]+)/i);
+    const match = element.textContent.match(/([\d,]+)\s*(?:[\u00A5\uFFE5]|\u5186)/i);
     if (!match || !usdRates.JPY) return;
     let converted = element.querySelector(".yen-usd-tile-converted");
     if (!converted) { converted = document.createElement("span"); converted.className = "yen-usd-tile-converted"; element.appendChild(converted); }
     converted.textContent = ` (USD $${toUSD(parseAmount(match[1]), "JPY").toFixed(2)})`;
+  });
+}
+
+function scanJapaneseItemPrices() {
+  document.querySelectorAll(".item-price").forEach((element) => {
+    if (element.querySelector(".yen-usd-converted, .yen-usd-tile-converted")) return;
+    const match = element.textContent.replace(/\s+/g, " ").trim().match(/([\d,]+)\s*円$/);
+    if (!match || !usdRates.JPY) return;
+    const amount = parseAmount(match[1]);
+    if (!Number.isFinite(amount)) return;
+    const converted = document.createElement("span");
+    converted.className = "yen-usd-tile-converted";
+    converted.textContent = " (USD $" + toUSD(amount, "JPY").toFixed(2) + ")";
+    element.appendChild(converted);
   });
 }
 
@@ -159,7 +173,7 @@ function scanAmazonPrices() {
   });
 }
 
-function scanPage() { if (document.body) { scanText(document.body); scanMercariTiles(); scanMercadoLibrePrices(); scanAmazonPrices(); } }
+function scanPage() { if (document.body) { scanText(document.body); scanMercariTiles(); scanJapaneseItemPrices(); scanMercadoLibrePrices(); scanAmazonPrices(); } }
 async function loadRates() {
   const saved = await extensionAPI.storage.local.get(["usdRates"]);
   if (saved.usdRates) usdRates = { ...FALLBACK_RATES, ...saved.usdRates };
